@@ -1,9 +1,12 @@
 import ICBack from "@/components/icons/ic-back";
-import { TEAM_LOGO_MAPPER } from "@/consts/TEAM_LOGO_MAPPER";
+import { TEAM_LOGO_MAPPER } from "@/consts";
 import { TeamsType, scores } from "@/data/scores";
-import { formatDate, formatTime } from "@/lib/formatDateTime";
-import { getFixturesList } from "@/lib/getFixturesLists";
-import { sortFixturesByDate } from "@/lib/sortFixturesByDate";
+import {
+  formatDate,
+  formatTime,
+  sortFixturesByDate,
+  getFixturesList,
+} from "@/lib";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/router";
@@ -90,7 +93,7 @@ const Fixture = () => {
                 alignItems: "center",
                 justifyContent: "space-between",
                 gap: "3rem",
-                padding : "1rem 0"
+                padding: "1rem 0",
               }}
             >
               <div

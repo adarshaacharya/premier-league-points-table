@@ -1,6 +1,5 @@
-import { getTeamsStatistics } from "@/lib/getTeamsStatistics";
+import { getTeamsStatistics , sortTeamByPoints} from "@/lib";
 import styles from "./index.module.css";
-import { sortTeamByPoints } from "@/lib/sortTeamsByPoints";
 import { TeamsType, scores } from "@/data/scores";
 import Link from "next/link";
 import { TEAM_LOGO_MAPPER } from "@/consts";
