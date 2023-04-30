@@ -17,7 +17,6 @@ export interface IScoreCard {
   date: string;
 }
 
-
 /**
  * @description: Calculate following things:
  * a) win, loss and draw counts
@@ -31,7 +30,14 @@ export const getTeamsStatistics = (scoresData: IScoreCard[]) => {
       const individualMatchScore = scoreDataWithDate.score;
       Object.entries(individualMatchScore).forEach(
         ([currentTeam, ownScore]) => {
-          if (!ownScore) {
+          const opponentTeam = Object.keys(individualMatchScore).find(
+            (opponent) => opponent !== currentTeam
+          );
+
+          const opponentScore = individualMatchScore[opponentTeam || ""];
+
+          // If both teams have not played, then return
+          if (ownScore === null && opponentScore === null) {
             return;
           }
 
@@ -46,30 +52,25 @@ export const getTeamsStatistics = (scoresData: IScoreCard[]) => {
             };
           }
 
-          const opponentTeam = Object.keys(individualMatchScore).find(
-            (opponent) => opponent !== currentTeam
-          );
+          if ((ownScore || ownScore === 0) ) {
+            const hasWon = ownScore > Number(opponentScore);
+            const hasLost = ownScore < Number(opponentScore);
 
-          const opponentScore = Number(
-            individualMatchScore[opponentTeam || ""]
-          );
+            if (hasWon) {
+              stats[currentTeam].wins++;
+              stats[currentTeam].points += POINTS.WIN;
+            } else if (hasLost) {
+              stats[currentTeam].losses++;
+              stats[currentTeam].points += POINTS.LOSS;
+            } else {
+              stats[currentTeam].draws++;
+              stats[currentTeam].points += POINTS.DRAW;
+            }
 
-          const hasWon = ownScore > opponentScore;
-          const hasLost = ownScore < opponentScore;
-
-          if (hasWon) {
-            stats[currentTeam].wins++;
-            stats[currentTeam].points += POINTS.WIN;
-          } else if (hasLost) {
-            stats[currentTeam].losses++;
-            stats[currentTeam].points += POINTS.LOSS;
-          } else {
-            stats[currentTeam].draws++;
-            stats[currentTeam].points += POINTS.DRAW;
+            stats[currentTeam].goalDifference +=
+              ownScore - Number(opponentScore);
+            stats[currentTeam].gamesPlayed++;
           }
-
-          stats[currentTeam].goalDifference += ownScore - opponentScore;
-          stats[currentTeam].gamesPlayed++;
         }
       );
 
@@ -77,8 +78,6 @@ export const getTeamsStatistics = (scoresData: IScoreCard[]) => {
     },
     {}
   );
-
+  console.log({ teamStatistics });
   return teamStatistics;
 };
-
-
