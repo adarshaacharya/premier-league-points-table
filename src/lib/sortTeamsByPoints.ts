@@ -7,6 +7,6 @@ import { ITeamStatistics } from "./getTeamsStatistics";
  */
 export const sortTeamByPoints = (teams: Record<string, ITeamStatistics>) => {
   return Object.entries(teams).sort(
-    ([, firstTeam], [, nextTeam]) => firstTeam.points - nextTeam.points
+    ([, firstTeam], [, nextTeam]) => nextTeam.points - firstTeam.points
   );
 };
