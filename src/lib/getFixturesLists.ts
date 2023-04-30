@@ -1,7 +1,11 @@
 import { IScoreCard } from "./getTeamsStatistics";
 
 export interface IFixture {
-  [key: string]: number | null | string | undefined;
+  // [key: string]: number | null | string | undefined;
+  homeTeam : string
+  awayTeam : string
+  homeTeamScore : number | null | undefined
+  awayTeamScore : number | null | undefined
   date : string
 }
 
@@ -21,8 +25,10 @@ export const getFixturesList = (scoresData: IScoreCard[]) => {
       }
 
       const matchResult = {
-        [homeTeam]: currentMatch.score[homeTeam],
-        [awayTeam]: currentMatch.score[awayTeam],
+        homeTeam,
+        awayTeam,
+        homeTeamScore: currentMatch.score[homeTeam],
+        awayTeamScore: currentMatch.score[awayTeam],
         date: currentMatch.date,
       };
 

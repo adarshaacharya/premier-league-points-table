@@ -1,0 +1,34 @@
+.table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.th {
+  color: #495057;
+  font-weight: 600;
+}
+
+.caption,
+.th {
+  padding: 1rem;
+  text-align: left;
+}
+
+.th, .td {
+  border-bottom: 1px solid #ddd;
+
+}
+
+.td {
+  padding: 1.2rem 1rem;
+}
+
+
+.tr:nth-of-type(2n) {
+	background: #fafafa;
+}
+
+
+.td::before {
+  font-weight: 700;
+}
