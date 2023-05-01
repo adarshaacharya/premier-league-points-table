@@ -43,68 +43,42 @@ export const getTeamsStatistics = (scoresData: IScoreCard[]) => {
         return stats;
       }
 
-      if (!stats?.[firstTeam]) {
-        stats[firstTeam] = {
-          wins: 0,
-          losses: 0,
-          draws: 0,
-          goalDifference: 0,
-          points: 0,
-          gamesPlayed: 0,
-        };
-      }
-
-      if (firstTeamScore || firstTeamScore === 0) {
-        const hasWon = firstTeamScore > Number(secondTeamScore);
-        const hasLost = firstTeamScore < Number(secondTeamScore);
-
-        if (hasWon) {
-          stats[firstTeam].wins++;
-          stats[firstTeam].points += POINTS.WIN;
-        } else if (hasLost) {
-          stats[firstTeam].losses++;
-          stats[firstTeam].points += POINTS.LOSS;
-        } else {
-          stats[firstTeam].draws++;
-          stats[firstTeam].points += POINTS.DRAW;
+      const updateTeamStats = (teamName: string, teamScore?: number | null) => {
+        if (!stats?.[teamName]) {
+          stats[teamName] = {
+            wins: 0,
+            losses: 0,
+            draws: 0,
+            goalDifference: 0,
+            points: 0,
+            gamesPlayed: 0,
+          };
         }
 
-        stats[firstTeam].goalDifference +=
-          firstTeamScore - Number(secondTeamScore);
-        stats[firstTeam].gamesPlayed++;
-      }
+        if (teamScore || teamScore === 0) {
+          const opponentName =
+            teamNames.find((name) => name !== teamName) || "";
+          const opponentScore = Number(individualMatchScore[opponentName]);
+          const hasWon = teamScore > opponentScore;
+          const hasLost = teamScore < opponentScore;
 
-      if (!stats?.[secondTeam]) {
-        stats[secondTeam] = {
-          wins: 0,
-          losses: 0,
-          draws: 0,
-          goalDifference: 0,
-          points: 0,
-          gamesPlayed: 0,
-        };
-      }
+          if (hasWon) {
+            stats[teamName].wins++;
+            stats[teamName].points += POINTS.WIN;
+          } else if (hasLost) {
+            stats[teamName].losses++;
+            stats[teamName].points += POINTS.LOSS;
+          } else {
+            stats[teamName].draws++;
+            stats[teamName].points += POINTS.DRAW;
+          }
 
-      if (secondTeamScore || secondTeamScore === 0) {
-        const hasWon = secondTeamScore > Number(firstTeamScore);
-        const hasLost = secondTeamScore < Number(firstTeamScore);
-
-        if (hasWon) {
-          stats[secondTeam].wins++;
-          stats[secondTeam].points += POINTS.WIN;
-        } else if (hasLost) {
-          stats[secondTeam].losses++;
-          stats[secondTeam].points += POINTS.LOSS;
-        } else {
-          stats[secondTeam].draws++;
-          stats[secondTeam].points += POINTS.DRAW;
+          stats[teamName].goalDifference += teamScore - opponentScore;
+          stats[teamName].gamesPlayed++;
         }
-
-        stats[secondTeam].goalDifference +=
-          secondTeamScore - Number(firstTeamScore);
-        stats[secondTeam].gamesPlayed++;
-      }
-
+      };
+      updateTeamStats(firstTeam, firstTeamScore);
+      updateTeamStats(secondTeam, secondTeamScore);
       return stats;
     },
     {}
