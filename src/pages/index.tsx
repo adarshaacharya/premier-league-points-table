@@ -1,16 +1,30 @@
-import Table from "@/components/Table";
-import { Inter } from "next/font/google";
-import React from "react";
+import LeaguePointsTable from "@/components/LeaguePointsTable";
+import { Container } from "@/styles/container.styles";
 
-
-function Home() {
+const Home = () => {
   return (
-      <div className="container">
-      <h1 className="mt-2 mb-2">Premier League Points Table</h1>
-
-        <Table />
-      </div>
+    <Container>
+      <h1
+        css={{
+          fontWeight: "bold",
+          marginTop: "2rem",
+          marginBottom: "2rem",
+        }}
+      >
+        Premier League Points Table
+      </h1>
+      <p
+        css={{
+          marginBottom: "1rem",
+          color: "gray",
+        }}
+      >
+        Click on the club name to view the full details about fixtures and
+        results.
+      </p>
+      <LeaguePointsTable />
+    </Container>
   );
-}
+};
 
 export default Home;
