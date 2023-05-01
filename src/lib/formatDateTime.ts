@@ -1,11 +1,12 @@
+import { DATE_TIME_FORMAT } from "@/consts";
 import { format, parseISO } from "date-fns";
 
-export const formatDate = (dateString: string) => {
-  const date = parseISO(dateString);
-  return format(date, "EEEE d MMMM yyyy");
+export const formatDate = (date: string) => {
+  const parsedDate = new Date(date);
+  return format(parsedDate, DATE_TIME_FORMAT.DATE);
 };
 
-export const formatTime = (dateString: string) => {
-  const date = parseISO(dateString);
-  return format(date, "HH:mm");
+export const formatTime = (date: string) => {
+  const parsedDate = parseISO(date);
+  return format(parsedDate, DATE_TIME_FORMAT.TIME);
 };
