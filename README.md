@@ -1,5 +1,7 @@
 # Premier League Points Table
 
+[View Live](https://premier-league-green.vercel.app/)
+
 ## Tech Stack
 
 - Next.js
