@@ -1,7 +1,5 @@
 # JS code exam
 
-[View Live](https://premier-league-green.vercel.app/)
-
 ---
 The task here is to create and display using the data in data.js:
 
