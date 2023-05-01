@@ -3,15 +3,14 @@ import Flex from "@/components/Flex";
 import ICBack from "@/components/icons/ic-back";
 import { TEAM_LOGO_MAPPER } from "@/consts";
 import { TeamsType, scores } from "@/data/scores";
-import {
-  sortFixturesByDate,
-  getFixturesList,
-} from "@/lib";
+import { sortFixturesByDate, getFixturesList } from "@/lib";
 import { Container } from "@/styles/container.styles";
 import { css } from "@emotion/react";
+import Head from "next/head";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/router";
+import React from "react";
 
 const Fixture = () => {
   const router = useRouter();
@@ -27,54 +26,59 @@ const Fixture = () => {
   const fixtures = sortFixturesByDate(teamFixturesList);
 
   return (
-    <Container>
-      <div
-        css={{
-          marginTop: "2rem",
-        }}
-      >
-        <Link href="/" passHref>
-          <Flex
-            align="center"
-            gap="1rem"
-            css={css`
-              font-size: 1.1rem;
-            `}
-          >
-            <ICBack height="1.5rem" width="1.5rem" />
-            View Points Table
-          </Flex>
-        </Link>
-      </div>
+    <React.Fragment>
+      <Head>
+        <title>Results and Fixtures</title>
+      </Head>
+      <Container>
+        <div
+          css={{
+            marginTop: "2rem",
+          }}
+        >
+          <Link href="/" passHref>
+            <Flex
+              align="center"
+              gap="1rem"
+              css={css`
+                font-size: 1.1rem;
+              `}
+            >
+              <ICBack height="1.5rem" width="1.5rem" />
+              View Points Table
+            </Flex>
+          </Link>
+        </div>
 
-      <Flex
-        align="center"
-        gap="2rem"
-        css={css`
-          margin: 2rem 0;
-        `}
-      >
-        <Image src={teamLogo} width={100} height={100} alt={teamName} />
-        <h2>{teamName}</h2>
-      </Flex>
+        <Flex
+          align="center"
+          gap="2rem"
+          css={css`
+            margin: 2rem 0;
+          `}
+        >
+          <Image src={teamLogo} width={100} height={100} alt={teamName} />
+          <h2>{teamName}</h2>
+        </Flex>
 
-      {fixtures.map((fixture, index) => {
-        const { awayTeam, awayTeamScore, homeTeam, homeTeamScore, date } =
-          fixture;
+        {fixtures.map((fixture, index) => {
+          const { awayTeam, awayTeamScore, homeTeam, homeTeamScore, date } =
+            fixture;
 
-        return (
-          <FixtureCard
-            key={index}
-            index={index}
-            date={date}
-            homeTeam={homeTeam}
-            homeTeamScore={homeTeamScore}
-            awayTeam={awayTeam}
-            awayTeamScore={awayTeamScore}
-          />
-        );
-      })}
-    </Container>
+          return (
+            <FixtureCard
+              key={index}
+              index={index}
+              date={date}
+              homeTeam={homeTeam}
+              homeTeamScore={homeTeamScore}
+              awayTeam={awayTeam}
+              awayTeamScore={awayTeamScore}
+            />
+          );
+        })}
+      </Container>
+    </React.Fragment>
   );
 };
 

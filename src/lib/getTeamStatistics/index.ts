@@ -16,6 +16,61 @@ export interface IScoreCard {
   date: string;
 }
 
+const updateTeamStatistics = ({
+  statistics,
+  teamName,
+  teamScore,
+  opponentScore,
+}: {
+  statistics: Record<string, ITeamStatistics>;
+  teamName: string;
+  teamScore?: number | null;
+  opponentScore?: number | null;
+}) => {
+  const teamStats = statistics[teamName] || {
+    wins: 0,
+    losses: 0,
+    draws: 0,
+    goalDifference: 0,
+    points: 0,
+    gamesPlayed: 0,
+  };
+
+  if (teamScore || teamScore === 0) {
+    const hasWon = teamScore > Number(opponentScore);
+    const hasLost = teamScore < Number(opponentScore);
+    const updatedTeamStatistics = hasWon
+      ? {
+          ...teamStats,
+          wins: teamStats.wins + 1,
+          points: teamStats.points + POINTS.WIN,
+        }
+      : hasLost
+      ? {
+          ...teamStats,
+          losses: teamStats.losses + 1,
+          points: teamStats.points + POINTS.LOSS,
+        }
+      : {
+          ...teamStats,
+          draws: teamStats.draws + 1,
+          points: teamStats.points + POINTS.DRAW,
+        };
+
+    return {
+      ...statistics,
+      [teamName]: {
+        ...updatedTeamStatistics,
+        goalDifference:
+          teamStats.goalDifference + (teamScore - Number(opponentScore)),
+        gamesPlayed: teamStats.gamesPlayed + 1,
+      },
+    };
+  }
+
+  return statistics;
+};
+
 /**
  * @description: Calculate following things:
  * a) win, loss and draw counts
@@ -33,53 +88,29 @@ export const getTeamsStatistics = (scoresData: IScoreCard[]) => {
         throw Error("There should be 2 teams in the match.");
       }
 
-      const [firstTeam, secondTeam] = Object.keys(individualMatchScore);
+      const [firstTeamName, secondTeamName] = teamNames;
 
-      const firstTeamScore = individualMatchScore[firstTeam];
-      const secondTeamScore = individualMatchScore[secondTeam];
+      const firstTeamScore = individualMatchScore[firstTeamName];
+      const secondTeamScore = individualMatchScore[secondTeamName];
 
       // If both teams have not played, then return
       if (firstTeamScore === null && secondTeamScore === null) {
         return stats;
       }
 
-      const updateTeamStats = (teamName: string, teamScore?: number | null) => {
-        if (!stats?.[teamName]) {
-          stats[teamName] = {
-            wins: 0,
-            losses: 0,
-            draws: 0,
-            goalDifference: 0,
-            points: 0,
-            gamesPlayed: 0,
-          };
-        }
+      const updatedStats = updateTeamStatistics({
+        statistics: stats,
+        teamName: firstTeamName,
+        teamScore: firstTeamScore,
+        opponentScore: secondTeamScore,
+      });
 
-        if (teamScore || teamScore === 0) {
-          const opponentName =
-            teamNames.find((name) => name !== teamName) || "";
-          const opponentScore = Number(individualMatchScore[opponentName]);
-          const hasWon = teamScore > opponentScore;
-          const hasLost = teamScore < opponentScore;
-
-          if (hasWon) {
-            stats[teamName].wins++;
-            stats[teamName].points += POINTS.WIN;
-          } else if (hasLost) {
-            stats[teamName].losses++;
-            stats[teamName].points += POINTS.LOSS;
-          } else {
-            stats[teamName].draws++;
-            stats[teamName].points += POINTS.DRAW;
-          }
-
-          stats[teamName].goalDifference += teamScore - opponentScore;
-          stats[teamName].gamesPlayed++;
-        }
-      };
-      updateTeamStats(firstTeam, firstTeamScore);
-      updateTeamStats(secondTeam, secondTeamScore);
-      return stats;
+      return updateTeamStatistics({
+        statistics: updatedStats,
+        teamName: secondTeamName,
+        teamScore: secondTeamScore,
+        opponentScore: firstTeamScore,
+      });
     },
     {}
   );
