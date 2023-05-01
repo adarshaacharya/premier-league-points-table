@@ -1,18 +1,21 @@
-import { IScoreCard } from "./getTeamsStatistics";
+import { IScoreCard } from "../getTeamStatistics";
 
 export interface IFixture {
-  // [key: string]: number | null | string | undefined;
-  homeTeam : string
-  awayTeam : string
-  homeTeamScore : number | null | undefined
-  awayTeamScore : number | null | undefined
-  date : string
+  homeTeam: string;
+  awayTeam: string;
+  homeTeamScore: number | null | undefined;
+  awayTeamScore: number | null | undefined;
+  date: string;
 }
 
 export const getFixturesList = (scoresData: IScoreCard[]) => {
   const fixturesList = scoresData.reduce<Record<string, IFixture[]>>(
     (acc, currentMatch) => {
       const teamNames = Object.keys(currentMatch.score);
+
+      if (teamNames.length !== 2) {
+        throw new Error("Only 2 teams are allowed.");
+      }
 
       const [homeTeam, awayTeam] = teamNames;
 
@@ -40,6 +43,5 @@ export const getFixturesList = (scoresData: IScoreCard[]) => {
     {}
   );
 
-  console.log({ fixturesList });
   return fixturesList;
 };

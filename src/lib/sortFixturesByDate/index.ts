@@ -1,4 +1,4 @@
-import { IFixture } from "./getFixturesLists";
+import { IFixture } from "../getFixturesList";
 
 export const sortFixturesByDate = (fixtures: IFixture[]) => {
   return fixtures.sort((firstMatch, secondMatch) => {

@@ -1,5 +1,4 @@
-import { POINTS } from "@/consts/POINTS";
-import { TeamsType } from "@/data/scores";
+import { POINTS } from "@/consts";
 
 export interface ITeamStatistics {
   wins: number;
@@ -28,6 +27,12 @@ export const getTeamsStatistics = (scoresData: IScoreCard[]) => {
   const teamStatistics = scoresData.reduce<Record<string, ITeamStatistics>>(
     (stats, scoreDataWithDate) => {
       const individualMatchScore = scoreDataWithDate.score;
+      const noOfTeams = Object.keys(individualMatchScore).length;
+
+      if (noOfTeams !== 2) {
+        throw Error("There should be 2 teams in the match.");
+      }
+
       Object.entries(individualMatchScore).forEach(
         ([currentTeam, ownScore]) => {
           const opponentTeam = Object.keys(individualMatchScore).find(
@@ -52,7 +57,7 @@ export const getTeamsStatistics = (scoresData: IScoreCard[]) => {
             };
           }
 
-          if ((ownScore || ownScore === 0) ) {
+          if (ownScore || ownScore === 0) {
             const hasWon = ownScore > Number(opponentScore);
             const hasLost = ownScore < Number(opponentScore);
 
@@ -78,6 +83,5 @@ export const getTeamsStatistics = (scoresData: IScoreCard[]) => {
     },
     {}
   );
-  console.log({ teamStatistics });
   return teamStatistics;
 };

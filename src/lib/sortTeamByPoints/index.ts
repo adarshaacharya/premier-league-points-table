@@ -1,4 +1,4 @@
-import { ITeamStatistics } from "./getTeamsStatistics";
+import { ITeamStatistics } from "../getTeamStatistics";
 
 /**
  * @description Sorts a given object of team statistics by their points in ascending order.
