@@ -2,7 +2,12 @@ import { TEAM_LOGO_MAPPER } from "@/consts";
 import { TeamsType } from "@/data/scores";
 import { formatDate, formatTime } from "@/lib";
 import Image from "next/image";
-import { FixtureCardContainer, dateStyles, timeStyles } from "./styles";
+import {
+  FixtureCardContainer,
+  dateStyles,
+  scoreBoxStyles,
+  timeStyles,
+} from "./styles";
 import Flex from "../Flex";
 import { css } from "@emotion/react";
 
@@ -52,13 +57,15 @@ const FixtureCard = ({
           <Image src={homeTeamLogo} width={30} height={30} alt={homeTeam} />
         </Flex>
 
-        <div
-          css={timeStyles}
-        
-        >
-          {isFutureFixture
-            ? formatTime(date)
-            : `${homeTeamScore} - ${awayTeamScore}`}
+        <div css={timeStyles}>
+          {isFutureFixture ? (
+            formatTime(date)
+          ) : (
+            <Flex align="center" justify="center" gap="0.1rem">
+              <div css={scoreBoxStyles}>{homeTeamScore}</div> 
+              <div css={scoreBoxStyles}>{awayTeamScore}</div>
+            </Flex>
+          )}
         </div>
 
         <Flex

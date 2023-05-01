@@ -22,3 +22,11 @@ export const timeStyles = css`
   text-align : center;
   flex: 1;
 `;
+
+
+export const scoreBoxStyles = css`
+    background-color : #3F3F3F;
+    color : white;
+    padding : 0.5rem 0.8rem;
+    border-radius : 0.1rem;
+`
