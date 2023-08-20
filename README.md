@@ -42,4 +42,3 @@ pnpm run test
 - components: reusable components, ui components, icons
 
 
- Thank you ! 
